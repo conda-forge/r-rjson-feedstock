@@ -1,4 +1,4 @@
-{% set version = '0.2.20' %}
+{% set version = "0.2.21" %}
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 
@@ -7,31 +7,30 @@ package:
   version: {{ version|replace("-", "_") }}
 
 source:
-  fn: rjson_{{ version }}.tar.gz
   url:
     - {{ cran_mirror }}/src/contrib/rjson_{{ version }}.tar.gz
     - {{ cran_mirror }}/src/contrib/Archive/rjson/rjson_{{ version }}.tar.gz
-  sha256: 3a287c1e5ee7c333ed8385913c0a307daf99335fbdf803e9dcca6e3d5adb3f6c
+  sha256: 982b56d35ccc0c7db0b20c1d3eab5f5f47c620309646fdc278ff1cc3433ea2e2
 
 build:
   merge_build_host: True  # [win]
-  number: 1002
-  skip: true  # [win32]
+  number: 0
   rpaths:
     - lib/R/lib/
     - lib/
 
 requirements:
   build:
-    - {{ compiler('c') }}        # [not win]
-    - {{ compiler('cxx') }}      # [not win]
+    - {{ compiler('c') }}              # [not win]
     - {{ compiler('m2w64_c') }}        # [win]
-    - {{ compiler('m2w64_cxx') }}        # [win]
+    - {{ compiler('cxx') }}            # [not win]
+    - {{ compiler('m2w64_cxx') }}      # [win]
     - {{ posix }}filesystem        # [win]
     - {{ posix }}make
     - {{ posix }}sed               # [win]
     - {{ posix }}coreutils         # [win]
     - {{ posix }}zip               # [win]
+    - cross-r-base {{ r_base }}    # [build_platform != target_platform]
   host:
     - r-base
   run:
@@ -45,10 +44,11 @@ test:
 
 about:
   home: https://CRAN.R-project.org/package=rjson
-  license: GPL-2
+  license: GPL-2.0-only
   summary: Converts R object into JSON objects and vice-versa.
   license_family: GPL2
-  license_file: '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-2'
+  license_file:
+    - {{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-2
 
 extra:
   recipe-maintainers:
