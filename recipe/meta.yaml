@@ -7,7 +7,6 @@ package:
   version: {{ version|replace("-", "_") }}
 
 source:
-  fn: rjson_{{ version }}.tar.gz
   url:
     - {{ cran_mirror }}/src/contrib/rjson_{{ version }}.tar.gz
     - {{ cran_mirror }}/src/contrib/Archive/rjson/rjson_{{ version }}.tar.gz
